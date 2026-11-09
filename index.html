@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leerkaarten Belfort &amp; Carnegie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: één smalle kolom, tabs bovenaan, kaart als middelpunt */
+  --bg:#f3f5f7; --surface:#ffffff; --ink:#14212b; --muted:#56646f; --line:#d5dce2;
+  --accent:#0f5c8c; --accent-ink:#ffffff;
+  --belfort:#8a3b12; --belfort-bg:#fbeee6; --carnegie:#1d6b47; --carnegie-bg:#e5f4ec;
+  --good:#1d6b47; --bad:#b3261e;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f161c; --surface:#18222b; --ink:#e8eef2; --muted:#a3b1bc; --line:#2c3a46;
+    --accent:#5cb3e6; --accent-ink:#06202f;
+    --belfort:#f0a77d; --belfort-bg:#3a2216; --carnegie:#7fd3a8; --carnegie-bg:#173126;
+    --good:#7fd3a8; --bad:#ff8a80; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f161c; --surface:#18222b; --ink:#e8eef2; --muted:#a3b1bc; --line:#2c3a46;
+  --accent:#5cb3e6; --accent-ink:#06202f;
+  --belfort:#f0a77d; --belfort-bg:#3a2216; --carnegie:#7fd3a8; --carnegie-bg:#173126;
+  --good:#7fd3a8; --bad:#ff8a80; color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-direction:column;gap:4px}
+h1{font-family:var(--display);font-weight:800;font-size:28px;margin:0;text-wrap:balance;letter-spacing:-0.01em}
+.sub{color:var(--muted);font-size:15px;margin:0}
+.tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+.tabs button{min-height:44px;border:0;border-radius:9px;background:transparent;color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.filters{display:flex;flex-wrap:wrap;gap:10px}
+.filters label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);flex:1 1 180px}
+select{min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;font-size:15px;padding:0 10px}
+button:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.meta{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px}
+.tag.belfort{color:var(--belfort);background:var(--belfort-bg)}
+.tag.carnegie{color:var(--carnegie);background:var(--carnegie-bg)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;min-height:280px;display:flex;flex-direction:column;gap:14px;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.qq{font-family:var(--display);font-weight:600;font-size:21px;margin:0;text-wrap:balance}
+.input{min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;padding:0 12px}
+.error{display:none;border:2px solid var(--bad);color:var(--bad);border-radius:12px;padding:12px;background:var(--surface)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
+.linkbtn{border:0;background:none;color:var(--accent);font:inherit;font-weight:600;cursor:pointer;min-height:44px;padding:0 4px}
+.card .q{font-family:var(--display);font-weight:600;font-size:22px;line-height:1.3;text-wrap:balance;margin:0}
+.card .a{font-size:20px;font-weight:700;margin:0}
+.card .u{color:var(--muted);margin:0}
+.card .hint{margin-top:auto;font-size:13px;color:var(--muted)}
+.card .grp{font-size:13px;color:var(--muted)}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.btn{min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;cursor:pointer;padding:0 14px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.good{border-color:var(--good);color:var(--good)}
+.btn:disabled{opacity:.45;cursor:default}
+.nav{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.nav .btn{min-width:48px}
+.progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress > div{height:100%;background:var(--accent);transition:width .2s}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{text-align:left;min-height:52px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;line-height:1.35}
+.opt.correct{border:2px solid var(--good);background:color-mix(in srgb,var(--good) 12%,var(--surface))}
+.opt.wrong{border:2px solid var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--surface))}
+.opt:disabled{cursor:default}
+.feedback{border-radius:12px;padding:14px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.feedback strong.ok{color:var(--good)} .feedback strong.no{color:var(--bad)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.panel h2{font-family:var(--display);font-size:22px;margin:0}
+.big{font-family:var(--display);font-weight:800;font-size:44px;margin:0;font-variant-numeric:tabular-nums}
+.review{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.review li{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:2px}
+.small{font-size:14px;color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+footer{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Leerkaarten Belfort &amp; Carnegie</h1>
+    <p class="sub">Straight Line-systeem en de principes uit Carnegies boeken. Oefen met flashcards of test jezelf met de quiz.</p>
+  </header>
+  <div class="error" id="error" role="alert"></div>
+  <section id="login" style="display:none;flex-direction:column;gap:14px"></section>
+  <section id="app" style="display:none;flex-direction:column;gap:18px">
+    <div class="top"><span id="who"></span><button class="linkbtn" id="logout">Uitloggen</button></div>
+    <div class="tabs" role="tablist">
+      <button id="tab-cards" role="tab" aria-selected="true">Flashcards</button>
+      <button id="tab-quiz" role="tab" aria-selected="false">Quiz</button>
+    </div>
+    <div class="filters">
+      <label for="f-bron">Bron
+        <select id="f-bron">
+          <option value="alle">Belfort en Carnegie</option>
+          <option value="Belfort">Alleen Belfort</option>
+          <option value="Carnegie">Alleen Carnegie</option>
+        </select>
+      </label>
+      <label for="f-groep">Onderdeel
+        <select id="f-groep"></select>
+      </label>
+    </div>
+    <section id="view-cards" style="display:flex;flex-direction:column;gap:14px"></section>
+    <section id="view-quiz" style="display:none;flex-direction:column;gap:14px"></section>
+  </section>
+  <footer>Nederlandse formuleringen zijn eigen vertalingen en parafrases. Bronnen: Belfort, <i>Way of the Wolf</i> (2017); Carnegie, <i>How to Win Friends and Influence People</i> (1936) en <i>How to Stop Worrying and Start Living</i> (1948).</footer>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
